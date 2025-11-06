@@ -406,7 +406,7 @@
                     </thead>
                     <tbody>
                        <tr>
-                        <td colspan="6" style="text-align-last: center;">No hay productos en la factura</td>
+                        <td colspan="6" style="text-align: center;">No hay productos en la factura</td>
                        </tr>
                     </tbody>
                 </table>
@@ -417,19 +417,19 @@
                 <h3>Resumen</h3>
                 <div class="total-row subtotal">
                     <span>Subtotal:</span>
-                    <span id="id-txt-subtotal">$8,200.00</span>
+                    <span id="id-txt-subtotal">$0.00</span>
                 </div>
                 <div class="total-row tax">
                     <span>IVA (15%):</span>
-                    <span id="id-txt-iva">$1,230.00</span>
+                    <span id="id-txt-iva">$0.00</span>
                 </div>
                 <div class="total-row">
                     <span>Descuento:</span>
-                    <span id="id-txt-descuento">-$150.00</span>
+                    <span id="id-txt-descuento">-$0.00</span>
                 </div>
                 <div class="total-row grand-total">
                     <span>TOTAL:</span>
-                    <span id="id-txt-total">$9,280.00</span>
+                    <span id="id-txt-totalfinal">$0.00</span>
                 </div>
             </div>
         </div>
@@ -481,7 +481,8 @@
      selectProducto.addEventListener("change", () => {
      if (selectProducto.value !== "") {
         const precio = parseFloat(selectProducto.value);
-        const cantidad = parseInt(txtCantidad.value);
+        let cantidad = parseInt(txtCantidad.value);
+        if (isNaN(cantidad) || cantidad < 1) { cantidad = 1; txtCantidad.value = 1; }
         txtPrecio.value = "$" + precio.toFixed(2);
         txtTotal.value = "$" + (precio * cantidad).toFixed(2);
      } else {
@@ -494,7 +495,8 @@
       txtCantidad.addEventListener("input", () => {
       if (selectProducto.value !== "") {
         const precio = parseFloat(selectProducto.value);
-        const cantidad = parseInt(txtCantidad.value);
+        let cantidad = parseInt(txtCantidad.value);
+        if (isNaN(cantidad) || cantidad < 1) { cantidad = 1; }
         txtTotal.value = "$" + (precio * cantidad).toFixed(2);
      }
       });
@@ -585,6 +587,10 @@
      lblDescuento.textContent = "-$" + descuento.toFixed(2);
      lblTotal.textContent = "$" + totalFinal.toFixed(2);
      }
-    </script>
-</body>
-</html>
+     
+     // calcular totales al cargar para mantener consistencia visual
+     calcularTotales();
+     
+     </script>
+     </body>
+     </html>
